@@ -19,7 +19,7 @@ public class bank {
 		return bankName;
 	}
 	public void changeBranchCode(String tempBranchCode) {
-		bankName = tempBranchCode;
+		branchCode = tempBranchCode;
 	}
 	public String getBranchCode() {
 		return branchCode;
@@ -29,6 +29,9 @@ public class bank {
 	}
 	public void removeAccount(int accountIndex) {
 		listOfAccounts.remove(accountIndex);
+	}
+	public ArrayList<account> getListOfAccount() {
+		return listOfAccounts;
 	}
 
 }

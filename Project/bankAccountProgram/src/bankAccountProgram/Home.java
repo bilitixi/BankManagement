@@ -95,6 +95,8 @@ public class Home extends JFrame {
 				customer Currentcustomer = new customer(listOfCustomer.size()+1,name.getText(),phone.getText(),address.getText());
 				listOfCustomer.add(Currentcustomer);
 				listCustomerModel.addElement(listOfCustomer.getLast().getOwnerName());
+				clearFields();
+				
 				
 				
 			}
@@ -134,6 +136,11 @@ public class Home extends JFrame {
 		    for (customer c : listOfCustomer) {
 		    	listCustomerModel.addElement(c.getOwnerName()); // or update JTable model
 		    }
+	}
+	private void clearFields() {
+		name.setText("");
+		phone.setText("");
+		address.setText("");
 	}
 	
 

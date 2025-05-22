@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,6 +12,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import bankAccountProgram.BankGUI.accountType;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class BankGUI extends JFrame {
 
@@ -19,7 +25,14 @@ public class BankGUI extends JFrame {
 	private static bank currentBank;
 	private static CustomerGUI customerGUI;
 	private JTextField bankName;
+	private JTextField accountNumber;
 	private JTextField branchCode;
+	private DefaultListModel listAccountModel = new DefaultListModel();
+	JComboBox comboBox;
+	public enum accountType {
+	    Checking, Saving
+	}
+
 
 	/**
 	 * Launch the application.
@@ -50,7 +63,7 @@ public class BankGUI extends JFrame {
 		
 		
 		
-		JList list = new JList();
+		JList list = new JList(listAccountModel);
 		list.setBounds(23, 70, 241, 123);
 		contentPane.add(list);
 		
@@ -61,7 +74,8 @@ public class BankGUI extends JFrame {
 		JButton btnSaveButton = new JButton("Save details");
 		btnSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				currentBank.changeBankName(bankName.getText());
+				currentBank.changeBranchCode(branchCode.getText());
 			}
 		});
 		btnSaveButton.setBounds(460, 220, 117, 21);
@@ -72,7 +86,7 @@ public class BankGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				 dispose();
 				 customerGUI.setVisible(true);
-				 BankGUI.this.setVisible(false);
+				 customerGUI.refreshBankList();
 				
 				 
 			}
@@ -87,7 +101,10 @@ public class BankGUI extends JFrame {
 		JButton btnAddAccount = new JButton("Add Account");
 		btnAddAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				account currentAccount =  new account(accountNumber.getText(),comboBox.getSelectedItem().toString());
+				currentBank.addAccount(currentAccount);
+				listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
+				clearFields();
 			}
 		});
 		btnAddAccount.setBounds(6, 349, 148, 30);
@@ -102,12 +119,15 @@ public class BankGUI extends JFrame {
 		contentPane.add(lblBranchCode);
 		
 		bankName = new JTextField();
-		bankName.setBounds(116, 256, 148, 19);
-		contentPane.add(bankName);
+		bankName.setBounds(484, 89, 148, 19);
 		bankName.setColumns(10);
+		bankName.setText(currentBank.getBankName());
+		contentPane.add(bankName);
+		
 		
 		branchCode = new JTextField();
-		branchCode.setBounds(116, 304, 148, 19);
+		branchCode.setBounds(484, 147, 148, 19);
+		branchCode.setText(currentBank.getBranchCode());
 		contentPane.add(branchCode);
 		branchCode.setColumns(10);
 		
@@ -118,29 +138,41 @@ public class BankGUI extends JFrame {
 		JButton btnRemoveAccount = new JButton("Remove Account");
 		btnRemoveAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+			
+				currentBank.getListOfAccount().remove(list.getSelectedIndex());
+				listAccountModel.remove(list.getSelectedIndex());
 			}
 		});
 		btnRemoveAccount.setBounds(161, 349, 141, 30);
 		contentPane.add(btnRemoveAccount);
 		
-		bankName = new JTextField();
-		bankName.setBounds(484, 89, 141, 19);
-		contentPane.add(bankName);
-		bankName.setColumns(10);
-		
-		branchCode = new JTextField();
-		branchCode.setColumns(10);
-		branchCode.setBounds(484, 147, 141, 19);
-		contentPane.add(branchCode);
+		accountNumber = new JTextField();
+		accountNumber.setBounds(116, 256, 141, 19);
+		contentPane.add(accountNumber);
+		accountNumber.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Account Number:");
-		lblNewLabel_2.setBounds(6, 259, 95, 13);
+		lblNewLabel_2.setBounds(6, 259, 112, 13);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("Account Type:");
-		lblNewLabel_2_1.setBounds(23, 307, 95, 13);
+		lblNewLabel_2_1.setBounds(23, 307, 112, 13);
 		contentPane.add(lblNewLabel_2_1);
+		
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(accountType.values()));
+		comboBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				comboBox.setModel(new DefaultComboBoxModel(accountType.values()));
+			}
+		});
+		
+		comboBox.setBounds(116, 303, 95, 21);
+		contentPane.add(comboBox);
 	}
-
+	private void clearFields() {
+		accountNumber.setText("");
+		comboBox.setModel(new DefaultComboBoxModel();
+	}
 }

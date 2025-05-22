@@ -18,5 +18,8 @@ public class account {
 	public void withdrawl(float amountTemp) {
 		balance -= amountTemp;
 	}
+	public String getAccountNumber() {
+		return accountNumber;
+	}
 
 }

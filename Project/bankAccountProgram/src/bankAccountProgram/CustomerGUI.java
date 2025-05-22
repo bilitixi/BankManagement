@@ -125,8 +125,9 @@ public class CustomerGUI extends JFrame {
 		btnAddBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bank currentBank = new bank(currentCustomer.getListOfBank().size()+1,bankName.getText(),branchCode.getText());
-				currentCustomer.getListOfBank().add(currentBank);
+				currentCustomer.addBank(currentBank);
 				listBankAccountModel.addElement(currentCustomer.getListOfBank().getLast().getBankName());
+				clearFields();
 			}
 		});
 		btnAddBank.setBounds(6, 349, 148, 30);
@@ -172,4 +173,17 @@ public class CustomerGUI extends JFrame {
 		contentPane.add(btnRemoveBank);
 		
 	}
+	public void refreshBankList() {
+		 listBankAccountModel.removeAllElements();
+		 for(bank b : currentCustomer.getListOfBank()) {
+			 listBankAccountModel.addElement(b.getBankName());
+		 }
+	}
+	private void clearFields() {
+		bankName.setText("");
+		branchCode.setText("");
+		
+	}
+	
+	
 }
