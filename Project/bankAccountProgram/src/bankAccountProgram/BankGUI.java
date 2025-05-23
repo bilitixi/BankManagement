@@ -101,10 +101,19 @@ public class BankGUI extends JFrame {
 		JButton btnAddAccount = new JButton("Add Account");
 		btnAddAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				account currentAccount =  new account(accountNumber.getText(),comboBox.getSelectedItem().toString());
+				if(comboBox.getSelectedItem().toString().equals("Saving")) {
+				savingAccount currentAccount = new savingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);
 				currentBank.addAccount(currentAccount);
 				listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
 				clearFields();
+				
+				}
+				else {
+				checkingAccount currentAccount = new	checkingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);
+					currentBank.addAccount(currentAccount);
+					listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
+					clearFields();
+				}
 			}
 		});
 		btnAddAccount.setBounds(6, 349, 148, 30);
@@ -132,6 +141,17 @@ public class BankGUI extends JFrame {
 		branchCode.setColumns(10);
 		
 		JButton btnEditAccount = new JButton("Edit Account");
+		btnEditAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(currentBank.getListOfAccount().get(list.getSelectedIndex()).getAccountType().equals("Saving")) {
+				accountSavingGUI currentAccount = new accountSavingGUI((savingAccount) currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this);
+				currentAccount.setVisible(true);
+				BankGUI.this.setVisible(false);
+				}
+			
+			}
+		});
 		btnEditAccount.setBounds(79, 389, 148, 35);
 		contentPane.add(btnEditAccount);
 		
@@ -173,6 +193,6 @@ public class BankGUI extends JFrame {
 	}
 	private void clearFields() {
 		accountNumber.setText("");
-		comboBox.setModel(new DefaultComboBoxModel();
+		
 	}
 }

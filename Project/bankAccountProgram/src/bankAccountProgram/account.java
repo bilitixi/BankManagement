@@ -1,12 +1,15 @@
+
 package bankAccountProgram;
+import java.util.ArrayList;
 
 public class account {
-	private String accountNumber;
-	private float balance;
-	private String accountType;
-	account(String accountNumTemp, String accountTypeTemp ){
+	protected String accountNumber;
+	protected float balance;
+	protected String accountType;
+	private ArrayList<transaction> transHistory = new ArrayList <transaction>();
+	account(String accountNumTemp, String accountTypeTemp, float balanceTemp ){
 		accountNumber = accountNumTemp;
-		balance = 0;
+		balance = balanceTemp;
 		accountType = accountTypeTemp;
 	}
 	public void changeAccountNumber(String accountNumTemp) {
@@ -15,11 +18,30 @@ public class account {
 	public void deposit(float amountTemp) {
 		balance += amountTemp;
 	}
-	public void withdrawl(float amountTemp) {
+	public boolean withdrawl(float amountTemp) {
+		if(balance < amountTemp) {
+			return false;
+		}
+		else {
 		balance -= amountTemp;
+		return true;
+		}
 	}
 	public String getAccountNumber() {
 		return accountNumber;
 	}
+	public String getAccountType() {
+		return this.accountType;
+	}
+	public float getBalance() {
+		return balance;
+	}
+	public ArrayList <transaction> getTransHistory(){
+		return transHistory;
+	}
+	public void addTransHistory(transaction tempTran) {
+		transHistory.add(tempTran);
+	}
+	
 
 }
