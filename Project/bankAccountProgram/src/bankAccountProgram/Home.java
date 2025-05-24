@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
+import java.awt.Font;
 
 public class Home extends JFrame {
 
@@ -86,7 +87,8 @@ public class Home extends JFrame {
 		contentPane.add(lblAddress);
 		
 		JLabel lblNewLabel_1 = new JLabel("List of customer:");
-		lblNewLabel_1.setBounds(59, 50, 138, 13);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_1.setBounds(59, 50, 173, 13);
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnAddCustomer = new JButton("Add Customer");

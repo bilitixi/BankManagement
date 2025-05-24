@@ -149,6 +149,11 @@ public class BankGUI extends JFrame {
 				currentAccount.setVisible(true);
 				BankGUI.this.setVisible(false);
 				}
+				else {
+					accountCheckingGUI currentAccount = new accountCheckingGUI((checkingAccount)currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this);
+					currentAccount.setVisible(true);
+					BankGUI.this.setVisible(false);
+				}
 			
 			}
 		});

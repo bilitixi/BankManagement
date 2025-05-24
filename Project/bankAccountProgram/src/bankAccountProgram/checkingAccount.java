@@ -13,9 +13,9 @@ public class checkingAccount extends account {
 	public float getOverDraftLimit() {
 		return overDraftLimit;
 	}
-	public boolean withdrawl(float amountWithdrawl) {
-		if(balance - amountWithdrawl < overDraftLimit) {
-			balance -= amountWithdrawl;
+	public boolean withdraw(float amountWithdraw) {
+		if(balance - amountWithdraw >= 0 - overDraftLimit) {
+			balance -= amountWithdraw;
 			return true;
 		}
 		else {

@@ -1,29 +1,29 @@
 package bankAccountProgram;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public class accountSavingGUI extends JFrame {
+public class accountCheckingGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField interestRate;
-	private JTextField withdrawLimit;
 	private JTextField amount;
-	private static savingAccount currentAccount;
+	private static checkingAccount currentAccount;
 	private static BankGUI bankGUI;
 	private DefaultListModel listTransModel = new DefaultListModel();
+	private JTextField draftLimit;
+
 
 	/**
 	 * Launch the application.
@@ -32,7 +32,7 @@ public class accountSavingGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
+					accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,52 +44,34 @@ public class accountSavingGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public accountSavingGUI(savingAccount currentAccount, BankGUI bankGUI) {
+	public accountCheckingGUI(checkingAccount currentAccount, BankGUI bankGUI) {
 		for (transaction trans : currentAccount.getTransHistory() ) {
 			listTransModel.addElement("|Time: "+ trans.getDateTime());
 			listTransModel.addElement(trans.getType() + ": "+ String.format("%.2f", trans.getAmount()) );
 		}
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 805, 471);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JList listTrans = new JList(listTransModel);
-		listTrans.setBounds(45, 119, 254, 199);
+		listTrans.setBounds(45, 53, 254, 199);
 		contentPane.add(listTrans);
 		
-		JLabel lblNewLabel = new JLabel("Interest Rate:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel.setBounds(347, 76, 135, 26);
-		contentPane.add(lblNewLabel);
+		JLabel lblOverdraftLimit = new JLabel("Overdraft Limit:");
+		lblOverdraftLimit.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblOverdraftLimit.setBounds(319, 111, 135, 26);
+		contentPane.add(lblOverdraftLimit);
 		
-		interestRate = new JTextField();
-		interestRate.setBounds(463, 82, 63, 19);
-		interestRate.setText( String.format("%.2f", currentAccount.getInterestRate()));
-		contentPane.add(interestRate);
-		interestRate.setColumns(10);
-		
-		JLabel lblNewLabel_1 = new JLabel("%");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(536, 76, 51, 26);
-		contentPane.add(lblNewLabel_1);
-		
-		JLabel lblWithdrawlLimit = new JLabel("Withdraw limit:");
-		lblWithdrawlLimit.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblWithdrawlLimit.setBounds(347, 111, 135, 26);
-		contentPane.add(lblWithdrawlLimit);
-		
-		withdrawLimit = new JTextField();
-		withdrawLimit.setText( String.format("%.2f", currentAccount.getWithdrawlLimit()));
-		withdrawLimit.setColumns(10);
-		withdrawLimit.setBounds(463, 112, 63, 19);
-		contentPane.add(withdrawLimit);
+	
 		
 		JLabel lblNewLabel_1_1 = new JLabel("$");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1.setBounds(546, 106, 41, 26);
+		lblNewLabel_1_1.setBounds(562, 111, 41, 26);
 		contentPane.add(lblNewLabel_1_1);
 		
 		JLabel lblBalance = new JLabel("Balance:");
@@ -127,17 +109,16 @@ public class accountSavingGUI extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				currentAccount.setInterestRate(Float.parseFloat(interestRate.getText()));
-				currentAccount.setWithdrawlLimt(Float.parseFloat(withdrawLimit.getText()));
+				currentAccount.setOverDraftLimit(Float.parseFloat(draftLimit.getText()));
 				dispose();
-				accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
+				accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
 				frame.setVisible(true); }
 				catch (NumberFormatException e1) {
 				    System.out.println("Invalid float string: " + e1.getMessage());
 				}
 			}
 		});
-		btnSave.setBounds(600, 94, 109, 21);
+		btnSave.setBounds(597, 116, 109, 21);
 		contentPane.add(btnSave);
 		
 		JButton btnDeposit = new JButton("Deposit");
@@ -150,7 +131,7 @@ public class accountSavingGUI extends JFrame {
 				listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime());
 				listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
 				dispose();
-				accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
+				accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
 				frame.setVisible(true); 
 				}
 				catch (NumberFormatException e1) {
@@ -159,7 +140,7 @@ public class accountSavingGUI extends JFrame {
 			
 			}
 		});
-		btnDeposit.setBounds(584, 262, 109, 21);
+		btnDeposit.setBounds(597, 262, 109, 21);
 		contentPane.add(btnDeposit);
 		
 		JButton btnWithdraw = new JButton("Withdraw");
@@ -176,7 +157,7 @@ public class accountSavingGUI extends JFrame {
 						listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime());
 						listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
 						dispose();
-						accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
+						accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
 						frame.setVisible(true); 
 					}
 				}
@@ -186,7 +167,7 @@ public class accountSavingGUI extends JFrame {
 				
 			}
 		});
-		btnWithdraw.setBounds(574, 293, 135, 21);
+		btnWithdraw.setBounds(589, 298, 135, 21);
 		contentPane.add(btnWithdraw);
 		
 		JButton btnExit = new JButton("Exit");
@@ -200,9 +181,18 @@ public class accountSavingGUI extends JFrame {
 		btnExit.setBounds(624, 403, 85, 21);
 		contentPane.add(btnExit);
 		
+		draftLimit = new JTextField();
+		draftLimit.setBounds(446, 117, 96, 19);
+		draftLimit.setText(String.format("%.2f", currentAccount.getOverDraftLimit() ));
+		contentPane.add(draftLimit);
+		draftLimit.setColumns(10);
+		
 		JLabel lblNewLabel_2 = new JLabel("Transaction History:");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(38, 83, 208, 13);
+		lblNewLabel_2.setBounds(45, 32, 208, 13);
 		contentPane.add(lblNewLabel_2);
 	}
+
+
 }
+
