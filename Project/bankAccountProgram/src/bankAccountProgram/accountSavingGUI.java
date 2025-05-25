@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -126,15 +127,29 @@ public class accountSavingGUI extends JFrame {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					if(Float.parseFloat(interestRate.getText()) >= 0 && Float.parseFloat(withdrawLimit.getText()) >= 0) {
 				currentAccount.setInterestRate(Float.parseFloat(interestRate.getText()));
 				currentAccount.setWithdrawlLimt(Float.parseFloat(withdrawLimit.getText()));
+				JOptionPane.showMessageDialog( contentPane , "Details saved", 
+                        "Notification", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 				accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
 				frame.setVisible(true); }
-				catch (NumberFormatException e1) {
-				    System.out.println("Invalid float string: " + e1.getMessage());
+					else {
+						JOptionPane.showMessageDialog( contentPane , "Please input positive number", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
+				
+				catch (NumberFormatException e1) {
+					 JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+				
 			}
 		});
 		btnSave.setBounds(600, 94, 109, 21);
@@ -143,7 +158,9 @@ public class accountSavingGUI extends JFrame {
 		JButton btnDeposit = new JButton("Deposit");
 		btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					if(Float.parseFloat(amount.getText()) > 0) {
 				currentAccount.deposit(Float.parseFloat(amount.getText()));
 				transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Deposit");
 				currentAccount.addTransHistory(currentTransaction);
@@ -152,10 +169,18 @@ public class accountSavingGUI extends JFrame {
 				dispose();
 				accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
 				frame.setVisible(true); 
+					}
+					else {
+						JOptionPane.showMessageDialog( contentPane , "Please enter positive number", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				catch (NumberFormatException e1) {
-				    System.out.println("Invalid float string: " + e1.getMessage());
+					 JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				
 			
 			}
 		});
@@ -165,10 +190,13 @@ public class accountSavingGUI extends JFrame {
 		JButton btnWithdraw = new JButton("Withdraw");
 		btnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					if(Float.parseFloat(amount.getText()) > 0) {
 					boolean isWithdraw = currentAccount.withdraw(Float.parseFloat(amount.getText()));
 					if(isWithdraw == false) {
-						System.out.println("Cannot withdraw");
+						 JOptionPane.showMessageDialog( contentPane , "You have exceeded withdraw limit or your balance", 
+		                            "Input Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Withdraw");
@@ -179,12 +207,19 @@ public class accountSavingGUI extends JFrame {
 						accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
 						frame.setVisible(true); 
 					}
+					}
+					else {
+						JOptionPane.showMessageDialog( contentPane , "Please enter positive number", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
 				}
 				catch (NumberFormatException e1) {
-				    System.out.println("Invalid float string: " + e1.getMessage());
+					 JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
-			}
+				}
+			
 		});
 		btnWithdraw.setBounds(574, 293, 135, 21);
 		contentPane.add(btnWithdraw);

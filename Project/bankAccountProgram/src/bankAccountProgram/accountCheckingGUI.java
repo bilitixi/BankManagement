@@ -1,6 +1,7 @@
 package bankAccountProgram;
 
 import java.awt.EventQueue;
+import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -108,14 +109,34 @@ public class accountCheckingGUI extends JFrame {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+				if(Float.parseFloat(draftLimit.getText()) > 0) {
 				currentAccount.setOverDraftLimit(Float.parseFloat(draftLimit.getText()));
+				JOptionPane.showMessageDialog( contentPane , "Details saved", 
+                        "Notification", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 				accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
 				frame.setVisible(true); }
-				catch (NumberFormatException e1) {
-				    System.out.println("Invalid float string: " + e1.getMessage());
+				else {
+					 JOptionPane.showMessageDialog( contentPane , "Please enter positive number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
+				}
+				
+				catch (NumberFormatException e1) {
+				   
+				    JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
+                            "Input Error", JOptionPane.ERROR_MESSAGE);
+
+
+				}
+				
+				
+					
+				
+				
+			
 			}
 		});
 		btnSave.setBounds(597, 116, 109, 21);
@@ -124,7 +145,9 @@ public class accountCheckingGUI extends JFrame {
 		JButton btnDeposit = new JButton("Deposit");
 		btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			
 				try {
+				if(Float.parseFloat(amount.getText()) > 0) {
 				currentAccount.deposit(Float.parseFloat(amount.getText()));
 				transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Deposit");
 				currentAccount.addTransHistory(currentTransaction);
@@ -132,11 +155,19 @@ public class accountCheckingGUI extends JFrame {
 				listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
 				dispose();
 				accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
-				frame.setVisible(true); 
+				frame.setVisible(true); }
+				else {
+					 JOptionPane.showMessageDialog( contentPane , "Please enter positive number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
 				}
 				catch (NumberFormatException e1) {
-				    System.out.println("Invalid float string: " + e1.getMessage());
+					
+					    JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				
 			
 			}
 		});
@@ -146,10 +177,13 @@ public class accountCheckingGUI extends JFrame {
 		JButton btnWithdraw = new JButton("Withdraw");
 		btnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					if(Float.parseFloat(amount.getText()) > 0) {
 					boolean isWithdraw = currentAccount.withdraw(Float.parseFloat(amount.getText()));
 					if(isWithdraw == false) {
-						System.out.println("Cannot withdraw");
+						 JOptionPane.showMessageDialog( contentPane , "You have exceeded overdraft limit", 
+		                            "Input Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Withdraw");
@@ -160,10 +194,19 @@ public class accountCheckingGUI extends JFrame {
 						accountCheckingGUI frame = new accountCheckingGUI(currentAccount, bankGUI);
 						frame.setVisible(true); 
 					}
+					}
+					else {
+						 JOptionPane.showMessageDialog( contentPane , "Please enter positive number.", 
+		                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				catch (NumberFormatException e1) {
-				    System.out.println("Invalid float string: " + e1.getMessage());
+					    JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				
+				
 				
 			}
 		});

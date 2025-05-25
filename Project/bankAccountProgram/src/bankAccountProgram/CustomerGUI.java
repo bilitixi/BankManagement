@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -97,9 +98,18 @@ public class CustomerGUI extends JFrame {
 		JButton btnSaveButton = new JButton("Save details");
 		btnSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				currentCustomer.changeOwnerAddress(address.getText());
-				currentCustomer.changeOwnerName(name.getText());
-				currentCustomer.changeOwnerPhoneNumber(phone.getText());
+				if(name.getText().trim().equals("") || phone.getText().trim().equals("") || address.getText().trim().equals("")) {
+					  JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					currentCustomer.changeOwnerAddress(address.getText());
+					currentCustomer.changeOwnerName(name.getText());
+					currentCustomer.changeOwnerPhoneNumber(phone.getText());
+					JOptionPane.showMessageDialog( contentPane , "Details saved", 
+                            "Notification", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
 			}
 		});
 		btnSaveButton.setBounds(465, 255, 117, 21);
@@ -124,10 +134,18 @@ public class CustomerGUI extends JFrame {
 		JButton btnAddBank = new JButton("Add Bank");
 		btnAddBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				bank currentBank = new bank(currentCustomer.getListOfBank().size()+1,bankName.getText(),branchCode.getText());
-				currentCustomer.addBank(currentBank);
-				listBankAccountModel.addElement(currentCustomer.getListOfBank().getLast().getBankName());
-				clearFields();
+				if(bankName.getText().trim().equals("")|| branchCode.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
+                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				
+				}
+				else {
+					bank currentBank = new bank(currentCustomer.getListOfBank().size()+1,bankName.getText(),branchCode.getText());
+					currentCustomer.addBank(currentBank);
+					listBankAccountModel.addElement(currentCustomer.getListOfBank().getLast().getBankName());
+					clearFields();
+				}
+				
 			}
 		});
 		btnAddBank.setBounds(6, 349, 148, 30);
@@ -154,9 +172,15 @@ public class CustomerGUI extends JFrame {
 		JButton btnEditBank = new JButton("Edit Bank");
 		btnEditBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				BankGUI currentBank = new BankGUI(currentCustomer.getListOfBank().get(list.getSelectedIndex()),CustomerGUI.this);
 				currentBank.setVisible(true);
 				CustomerGUI.this.setVisible(false);
+				}
+				catch(IndexOutOfBoundsException e1) {
+					  JOptionPane.showMessageDialog( contentPane , "Please choose a bank in the list.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnEditBank.setBounds(79, 389, 148, 35);
@@ -165,8 +189,14 @@ public class CustomerGUI extends JFrame {
 		JButton btnRemoveBank = new JButton("Remove Bank");
 		btnRemoveBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				currentCustomer.getListOfBank().remove(list.getSelectedIndex());
 				listBankAccountModel.removeElement(list.getSelectedValue());
+				}
+				catch (IndexOutOfBoundsException e1) {
+					 JOptionPane.showMessageDialog( contentPane , "Please choose a bank in the list.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnRemoveBank.setBounds(161, 349, 141, 30);

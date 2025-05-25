@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -74,8 +75,17 @@ public class BankGUI extends JFrame {
 		JButton btnSaveButton = new JButton("Save details");
 		btnSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(bankName.getText().trim().equals("") || branchCode.getText().trim().equals("")) 
+				{
+					 JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
 				currentBank.changeBankName(bankName.getText());
 				currentBank.changeBranchCode(branchCode.getText());
+				JOptionPane.showMessageDialog( contentPane , "Details saved", 
+                        "Notification", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 		btnSaveButton.setBounds(460, 220, 117, 21);
@@ -101,18 +111,22 @@ public class BankGUI extends JFrame {
 		JButton btnAddAccount = new JButton("Add Account");
 		btnAddAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(comboBox.getSelectedItem().toString().equals("Saving")) {
+				if(comboBox.getSelectedItem().toString().equals("Saving") && !(accountNumber.getText().trim().equals(""))) {
 				savingAccount currentAccount = new savingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);
 				currentBank.addAccount(currentAccount);
 				listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
 				clearFields();
 				
 				}
-				else {
+				else if ( comboBox.getSelectedItem().toString().equals("Checking") && !(accountNumber.getText().trim().equals(""))){
 				checkingAccount currentAccount = new	checkingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);
 					currentBank.addAccount(currentAccount);
 					listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
 					clearFields();
+				}
+				else {
+					JOptionPane.showMessageDialog( contentPane , "Please fill in account number.", 
+                            "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -143,7 +157,7 @@ public class BankGUI extends JFrame {
 		JButton btnEditAccount = new JButton("Edit Account");
 		btnEditAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
 				if(currentBank.getListOfAccount().get(list.getSelectedIndex()).getAccountType().equals("Saving")) {
 				accountSavingGUI currentAccount = new accountSavingGUI((savingAccount) currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this);
 				currentAccount.setVisible(true);
@@ -153,6 +167,12 @@ public class BankGUI extends JFrame {
 					accountCheckingGUI currentAccount = new accountCheckingGUI((checkingAccount)currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this);
 					currentAccount.setVisible(true);
 					BankGUI.this.setVisible(false);
+				}
+				}
+				catch(IndexOutOfBoundsException e1) {
+					  JOptionPane.showMessageDialog( contentPane , "Please choose an account in the list.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					
 				}
 			
 			}

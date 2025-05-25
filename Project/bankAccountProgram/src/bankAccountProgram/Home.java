@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.DefaultListModel;
@@ -94,10 +95,16 @@ public class Home extends JFrame {
 		JButton btnAddCustomer = new JButton("Add Customer");
 		btnAddCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				customer Currentcustomer = new customer(listOfCustomer.size()+1,name.getText(),phone.getText(),address.getText());
-				listOfCustomer.add(Currentcustomer);
-				listCustomerModel.addElement(listOfCustomer.getLast().getOwnerName());
-				clearFields();
+				if(name.getText().trim().equals("") || phone.getText().trim().equals("") || address.getText().trim().equals("")) {
+					  JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					  customer Currentcustomer = new customer(listOfCustomer.size()+1,name.getText(),phone.getText(),address.getText());
+						listOfCustomer.add(Currentcustomer);
+						listCustomerModel.addElement(listOfCustomer.getLast().getOwnerName());
+						clearFields();
+				}
 				
 				
 				
@@ -109,8 +116,14 @@ public class Home extends JFrame {
 		JButton btnRemoveCustomer = new JButton("Remove Customer");
 		btnRemoveCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				listOfCustomer.remove(list.getSelectedIndex());
 				listCustomerModel.removeElement(list.getSelectedValue());
+				} 
+				catch(IndexOutOfBoundsException e1) {
+					  JOptionPane.showMessageDialog( contentPane , "Please choose a customer in the list.", 
+	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		
 		});
@@ -119,10 +132,20 @@ public class Home extends JFrame {
 		
 		JButton btnEditCustomer = new JButton("Edit Customer");
 		btnEditCustomer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
-				CustomerGUI currentCust = new CustomerGUI(listOfCustomer.get(list.getSelectedIndex()),Home.this);
-				currentCust.setVisible(true);
-				Home.this.setVisible(false);
+			public void actionPerformed(ActionEvent e) {	
+				
+				
+				
+				try {
+					CustomerGUI currentCust = new CustomerGUI(listOfCustomer.get(list.getSelectedIndex()),Home.this);
+					currentCust.setVisible(true);
+					Home.this.setVisible(false);
+					}
+					catch(IndexOutOfBoundsException e1) {
+						  JOptionPane.showMessageDialog( contentPane , "Please choose a customer in the list.", 
+		                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
 			}
 		});
 		btnEditCustomer.setBounds(471, 284, 124, 21);
