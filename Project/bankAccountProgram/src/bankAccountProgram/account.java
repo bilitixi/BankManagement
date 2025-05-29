@@ -18,7 +18,7 @@ public class account {
 	public void deposit(float amountTemp) {
 		balance += amountTemp;
 	}
-	public boolean withdrawl(float amountTemp) {
+	public boolean withdraw(float amountTemp) {
 		if(balance < amountTemp) {
 			return false;
 		}

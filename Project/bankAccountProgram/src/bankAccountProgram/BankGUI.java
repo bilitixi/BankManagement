@@ -23,16 +23,16 @@ public class BankGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static bank currentBank;
-	private static CustomerGUI customerGUI;
+	private static bank currentBank; // bank object
+	private static CustomerGUI customerGUI; //customerGUI object
 	private JTextField bankName;
 	private JTextField accountNumber;
 	private JTextField branchCode;
-	private DefaultListModel listAccountModel = new DefaultListModel();
+	private DefaultListModel listAccountModel = new DefaultListModel(); //list model
 	JComboBox comboBox;
-	public enum accountType {
+	public enum accountType { // enum for group of constant value
 	    Checking, Saving
-	}
+	} 
 
 
 	/**
@@ -42,7 +42,7 @@ public class BankGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BankGUI frame = new BankGUI(currentBank,  customerGUI);
+					BankGUI frame = new BankGUI(currentBank,  customerGUI); // create new BankGUI object with bank object and customerGUI object
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +54,10 @@ public class BankGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public BankGUI(bank currentBank, CustomerGUI customerGUI) {
+	public BankGUI(bank currentBank, CustomerGUI customerGUI) { // BankGUI constructor
+		this.currentBank = currentBank; // set currentBank as the bank object that is passed into BankGUI constructor 
+		refreshListOfAccount(); // refresh Jlist
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 805, 471);
 		contentPane = new JPanel();
@@ -64,7 +67,7 @@ public class BankGUI extends JFrame {
 		
 		
 		
-		JList list = new JList(listAccountModel);
+		JList list = new JList(listAccountModel); // add items from listmodel to Jlist
 		list.setBounds(23, 70, 241, 123);
 		contentPane.add(list);
 		
@@ -72,31 +75,32 @@ public class BankGUI extends JFrame {
 		lblNewLabel.setBounds(23, 47, 131, 13);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnSaveButton = new JButton("Save details");
+		JButton btnSaveButton = new JButton("Save details"); //update changes in the bank object
 		btnSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(bankName.getText().trim().equals("") || branchCode.getText().trim().equals("")) 
-				{
+				{// fields are empty
 					 JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); // display notification
 				}
 				else {
+					// fields are fulfilled , call functions in the bank object
 				currentBank.changeBankName(bankName.getText());
 				currentBank.changeBranchCode(branchCode.getText());
 				JOptionPane.showMessageDialog( contentPane , "Details saved", 
-                        "Notification", JOptionPane.INFORMATION_MESSAGE);
+                        "Notification", JOptionPane.INFORMATION_MESSAGE); // display success message
 				}
 			}
 		});
 		btnSaveButton.setBounds(460, 220, 117, 21);
 		contentPane.add(btnSaveButton);
 		
-		JButton btnExitButton = new JButton("Exit");
+		JButton btnExitButton = new JButton("Exit"); // return to the CustomerGUI
 		btnExitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 dispose();
-				 customerGUI.setVisible(true);
-				 customerGUI.refreshBankList();
+				 dispose(); // remove BankGUI window
+				 customerGUI.setVisible(true); //display customerGUI window by calling the customerGUI object
+				 customerGUI.refreshBankList(); // refresh banklist in BankGUI
 				
 				 
 			}
@@ -219,5 +223,11 @@ public class BankGUI extends JFrame {
 	private void clearFields() {
 		accountNumber.setText("");
 		
+	}
+	private void refreshListOfAccount() {
+		listAccountModel.removeAllElements();
+		for(account a : currentBank.getListOfAccount()) {
+			listAccountModel.addElement(a.getAccountNumber());
+		}
 	}
 }

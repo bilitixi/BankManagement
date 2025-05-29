@@ -67,30 +67,30 @@ public class accountSavingGUI extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		interestRate = new JTextField();
-		interestRate.setBounds(463, 82, 63, 19);
-		interestRate.setText( String.format("%.2f", currentAccount.getInterestRate()));
+		interestRate.setBounds(473, 82, 63, 19);
+		interestRate.setText(String.format("%.2f", currentAccount.getInterestRate()));
 		contentPane.add(interestRate);
 		interestRate.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("%");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(536, 76, 51, 26);
+		lblNewLabel_1.setBounds(546, 76, 34, 26);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblWithdrawlLimit = new JLabel("Withdraw limit:");
 		lblWithdrawlLimit.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblWithdrawlLimit.setBounds(347, 111, 135, 26);
+		lblWithdrawlLimit.setBounds(349, 111, 135, 26);
 		contentPane.add(lblWithdrawlLimit);
 		
 		withdrawLimit = new JTextField();
-		withdrawLimit.setText( String.format("%.2f", currentAccount.getWithdrawlLimit()));
+		withdrawLimit.setText( String.format("%.2f", currentAccount.getWithdrawLimit()));
 		withdrawLimit.setColumns(10);
-		withdrawLimit.setBounds(463, 112, 63, 19);
+		withdrawLimit.setBounds(473, 117, 63, 19);
 		contentPane.add(withdrawLimit);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("$");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1.setBounds(546, 106, 41, 26);
+		lblNewLabel_1_1.setBounds(546, 111, 28, 26);
 		contentPane.add(lblNewLabel_1_1);
 		
 		JLabel lblBalance = new JLabel("Balance:");
@@ -131,7 +131,7 @@ public class accountSavingGUI extends JFrame {
 				try {
 					if(Float.parseFloat(interestRate.getText()) >= 0 && Float.parseFloat(withdrawLimit.getText()) >= 0) {
 				currentAccount.setInterestRate(Float.parseFloat(interestRate.getText()));
-				currentAccount.setWithdrawlLimt(Float.parseFloat(withdrawLimit.getText()));
+				currentAccount.setWithdrawLimit(Float.parseFloat(withdrawLimit.getText()));
 				JOptionPane.showMessageDialog( contentPane , "Details saved", 
                         "Notification", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
@@ -237,7 +237,23 @@ public class accountSavingGUI extends JFrame {
 		
 		JLabel lblNewLabel_2 = new JLabel("Transaction History:");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(38, 83, 208, 13);
+		lblNewLabel_2.setBounds(45, 76, 208, 26);
 		contentPane.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Balance Next Month:");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_3.setBounds(309, 147, 155, 26);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblbalanceNextMonth = new JLabel("New label");
+		lblbalanceNextMonth.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.returnBalanceNextMonth()));
+		lblbalanceNextMonth.setBounds(473, 154, 63, 13);
+		contentPane.add(lblbalanceNextMonth);
+		
+		JLabel lblNewLabel_1_1_2 = new JLabel("$");
+		lblNewLabel_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_1_1_2.setBounds(546, 147, 28, 26);
+		contentPane.add(lblNewLabel_1_1_2);
 	}
 }

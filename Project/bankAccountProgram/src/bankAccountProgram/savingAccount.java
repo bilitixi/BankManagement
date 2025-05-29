@@ -1,14 +1,15 @@
 package bankAccountProgram;
-
 public class savingAccount extends account {
 	private float interestRate;
-	private float withdrawaLimit;
+	private float withdrawLimit;
+	private float balanceNextMonth;
     
 	savingAccount(String accountNumTemp, String accountType, float balanceTemp){
 		super(accountNumTemp, accountType, balanceTemp );
-		interestRate = 10/100;
-		withdrawaLimit = 1000;
-			
+		interestRate = 0.1F;
+		withdrawLimit = 1000;
+		
+		
 	}
 	public float getInterestRate() {
 		return interestRate;
@@ -16,16 +17,16 @@ public class savingAccount extends account {
 	public void setInterestRate(float interestRateTemp) {
 		interestRate = interestRateTemp;
 	}
-	public float getWithdrawlLimit()
+	public float getWithdrawLimit()
 	{
-		return withdrawaLimit;
+		return withdrawLimit;
 	}
-	public void setWithdrawlLimt(float tempWithdrawlLimit) {
-		withdrawaLimit = tempWithdrawlLimit;
+	public void setWithdrawLimit(float tempWithdrawLimit) {
+		withdrawLimit = tempWithdrawLimit;
 		
 	}
 	 public boolean withdraw(double amountTemp) {
-	        if (amountTemp >= withdrawaLimit) {
+	        if (amountTemp >= withdrawLimit) {
 	            return false;
 	        } else if (amountTemp > balance) {
 	        	return false;
@@ -34,5 +35,10 @@ public class savingAccount extends account {
 	            return true;
 	        }
 	    }
+	 
+	 public float returnBalanceNextMonth(){	
+		 balanceNextMonth = balance + (interestRate * balance);
+		 return balanceNextMonth; 
+	 }
 	 
 }

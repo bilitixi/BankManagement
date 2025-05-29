@@ -18,14 +18,14 @@ public class CustomerGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static customer currentCustomer;
-	private static Home parent;
+	private static customer currentCustomer; // customer object
+	private static Home parent; // HomeGUI object
 	private JTextField name;
 	private JTextField phone;
 	private JTextField address;
 	private JTextField bankName;
 	private JTextField branchCode;
-	private DefaultListModel listBankAccountModel = new DefaultListModel();
+	public DefaultListModel listBankAccountModel = new DefaultListModel(); // listmodel to update Jlist
 	
 
 	/**
@@ -35,7 +35,7 @@ public class CustomerGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CustomerGUI frame = new CustomerGUI(currentCustomer,parent);
+					CustomerGUI frame = new CustomerGUI(currentCustomer,parent); // create new CustomerGUI object with customer object and Home object
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,8 +47,10 @@ public class CustomerGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CustomerGUI(customer customerTemp, Home parent ) {
-		currentCustomer = customerTemp;
+	public CustomerGUI(customer customerTemp, Home parent ) { //customerGUI constructor
+		
+		this.currentCustomer = customerTemp; // currentCustomer object is passed into the parameters of CustomerGUI constructor
+		refreshBankList(); // call this function to refresh the Jlist
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 805, 471);
@@ -87,7 +89,7 @@ public class CustomerGUI extends JFrame {
 		lblAddress.setBounds(404, 210, 89, 13);
 		contentPane.add(lblAddress);
 		
-		JList list = new JList(listBankAccountModel);
+		JList list = new JList(listBankAccountModel); // add items in listModel to the JList
 		list.setBounds(23, 70, 241, 156);
 		contentPane.add(list);
 		
@@ -98,16 +100,22 @@ public class CustomerGUI extends JFrame {
 		JButton btnSaveButton = new JButton("Save details");
 		btnSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(name.getText().trim().equals("") || phone.getText().trim().equals("") || address.getText().trim().equals("")) {
+				// condition to check if the user enter data in all of the text fields
+				if(name.getText().trim().equals("") || phone.getText().trim().equals("") || address.getText().trim().equals("")) { 
 					  JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
 	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+					// display error message if the user does not fill in all the text fields
+				
 				}
 				else {
+					// call function from the customer object to change data
 					currentCustomer.changeOwnerAddress(address.getText());
 					currentCustomer.changeOwnerName(name.getText());
 					currentCustomer.changeOwnerPhoneNumber(phone.getText());
 					JOptionPane.showMessageDialog( contentPane , "Details saved", 
-                            "Notification", JOptionPane.INFORMATION_MESSAGE);
+                            "Notification", JOptionPane.INFORMATION_MESSAGE); // display success message
+					
+					
 				}
 				
 			}
@@ -115,12 +123,12 @@ public class CustomerGUI extends JFrame {
 		btnSaveButton.setBounds(465, 255, 117, 21);
 		contentPane.add(btnSaveButton);
 		
-		JButton btnExitButton = new JButton("Exit");
+		JButton btnExitButton = new JButton("Exit"); // execute exit button to return Home page
 		btnExitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 dispose();
-				 parent.setVisible(true);
-				 parent.refreshCustomerList();
+				 dispose(); // remove CustomerGUI window
+				 parent.setVisible(true); // display Home window
+				 parent.refreshCustomerList(); // refresh customer list in Jlist
 				 
 			}
 		});
@@ -134,16 +142,17 @@ public class CustomerGUI extends JFrame {
 		JButton btnAddBank = new JButton("Add Bank");
 		btnAddBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// condition to check if user has filled in all the fields
 				if(bankName.getText().trim().equals("")|| branchCode.getText().trim().equals("")) {
 					JOptionPane.showMessageDialog( contentPane , "Please fill in all the fields.", 
-                            "Input Error", JOptionPane.ERROR_MESSAGE);
+                            "Input Error", JOptionPane.ERROR_MESSAGE); // display error button if there is blank space
 				
 				}
 				else {
-					bank currentBank = new bank(currentCustomer.getListOfBank().size()+1,bankName.getText(),branchCode.getText());
-					currentCustomer.addBank(currentBank);
-					listBankAccountModel.addElement(currentCustomer.getListOfBank().getLast().getBankName());
-					clearFields();
+					bank currentBank = new bank(currentCustomer.getListOfBank().size()+1,bankName.getText(),branchCode.getText()); //  create bank object
+					currentCustomer.addBank(currentBank); // add bank object to the list of bank of currentCustomer object
+					listBankAccountModel.addElement(currentCustomer.getListOfBank().getLast().getBankName()); // add to the listModel to update Jlist
+					clearFields(); // clear enter fields
 				}
 				
 			}
@@ -169,33 +178,33 @@ public class CustomerGUI extends JFrame {
 		contentPane.add(branchCode);
 		branchCode.setColumns(10);
 		
-		JButton btnEditBank = new JButton("Edit Bank");
+		JButton btnEditBank = new JButton("Edit Bank"); // open BankGUI to edit Bank details
 		btnEditBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
+				try { // try to create BankGUI object and pass bank Object from listOfbank of the customer object and CustomerGUI object
 				BankGUI currentBank = new BankGUI(currentCustomer.getListOfBank().get(list.getSelectedIndex()),CustomerGUI.this);
-				currentBank.setVisible(true);
-				CustomerGUI.this.setVisible(false);
+				currentBank.setVisible(true); // display BankGUI window
+				CustomerGUI.this.setVisible(false); // disable visual of CustomerGUI window
 				}
-				catch(IndexOutOfBoundsException e1) {
+				catch(IndexOutOfBoundsException e1) {// catch error when the user does not select a bank in the Jlist
 					  JOptionPane.showMessageDialog( contentPane , "Please choose a bank in the list.", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); // display error notification
 				}
 			}
 		});
 		btnEditBank.setBounds(79, 389, 148, 35);
 		contentPane.add(btnEditBank);
 		
-		JButton btnRemoveBank = new JButton("Remove Bank");
+		JButton btnRemoveBank = new JButton("Remove Bank"); // remove selected bank from Jlist
 		btnRemoveBank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				currentCustomer.getListOfBank().remove(list.getSelectedIndex());
-				listBankAccountModel.removeElement(list.getSelectedValue());
+				currentCustomer.getListOfBank().remove(list.getSelectedIndex()); // get the bank object by retrieving index of bank list
+				listBankAccountModel.removeElement(list.getSelectedValue()); // remove the name of the bank from the Jlist
 				}
-				catch (IndexOutOfBoundsException e1) {
+				catch (IndexOutOfBoundsException e1) { // catch errors when the user does not select bank name in the list
 					 JOptionPane.showMessageDialog( contentPane , "Please choose a bank in the list.", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); // display error message
 				}
 			}
 		});
@@ -204,12 +213,12 @@ public class CustomerGUI extends JFrame {
 		
 	}
 	public void refreshBankList() {
-		 listBankAccountModel.removeAllElements();
-		 for(bank b : currentCustomer.getListOfBank()) {
-			 listBankAccountModel.addElement(b.getBankName());
+		 listBankAccountModel.removeAllElements(); // remove all elements in the Jlist
+		 for(bank b : currentCustomer.getListOfBank()) { // for each loop to access each bank object from the list of bank in the customer object
+			 listBankAccountModel.addElement(b.getBankName()); // retrieve name of the bank from the bank object and display in on the Jlist
 		 }
 	}
-	private void clearFields() {
+	private void clearFields() { // clear text field function
 		bankName.setText("");
 		branchCode.setText("");
 		
