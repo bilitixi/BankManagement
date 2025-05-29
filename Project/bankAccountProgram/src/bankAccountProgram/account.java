@@ -19,12 +19,12 @@ public class account {
 		balance += amountTemp;
 	}
 	public boolean withdraw(float amountTemp) {
-		if(balance < amountTemp) {
-			return false;
+		if(balance < amountTemp) {// if the withdraw amount is less than the balance
+			return false; // return false -> cannot withdraw
 		}
-		else {
-		balance -= amountTemp;
-		return true;
+		else { // if the withdraw amount is more than the balance
+		balance -= amountTemp; // update new balance
+		return true; //return true -> cannot withdraw
 		}
 	}
 	public String getAccountNumber() {
@@ -40,7 +40,7 @@ public class account {
 		return transHistory;
 	}
 	public void addTransHistory(transaction tempTran) {
-		transHistory.add(tempTran);
+		transHistory.add(tempTran); // add transaction object to list of transaction
 	}
 	
 

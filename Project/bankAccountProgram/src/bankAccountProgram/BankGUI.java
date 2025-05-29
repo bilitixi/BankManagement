@@ -18,6 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import bankAccountProgram.BankGUI.accountType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class BankGUI extends JFrame {
 
@@ -115,20 +116,21 @@ public class BankGUI extends JFrame {
 		JButton btnAddAccount = new JButton("Add Account");
 		btnAddAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(comboBox.getSelectedItem().toString().equals("Saving") && !(accountNumber.getText().trim().equals(""))) {
-				savingAccount currentAccount = new savingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);
-				currentBank.addAccount(currentAccount);
-				listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
-				clearFields();
+				// condition to check if the user wanted to add "Checking" or "Saving" account
+				if(comboBox.getSelectedItem().toString().equals("Saving") && !(accountNumber.getText().trim().equals(""))) { // if the user added saving account and no fields are empty
+				savingAccount currentAccount = new savingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0); // create saving account object
+				currentBank.addAccount(currentAccount); //add saving account object to the list of account of the bank object
+				listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber()); // retrieve the account number from the last account object in the list of account and add to the JList
+				clearFields();// clear text fields
 				
 				}
-				else if ( comboBox.getSelectedItem().toString().equals("Checking") && !(accountNumber.getText().trim().equals(""))){
-				checkingAccount currentAccount = new	checkingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);
-					currentBank.addAccount(currentAccount);
-					listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber());
-					clearFields();
+				else if ( comboBox.getSelectedItem().toString().equals("Checking") && !(accountNumber.getText().trim().equals(""))){ // if the user added checking account and no fields are empty
+				checkingAccount currentAccount = new	checkingAccount(accountNumber.getText(),comboBox.getSelectedItem().toString(),0);  // create checking account object
+					currentBank.addAccount(currentAccount); //add checking account object to the list of account of the bank object
+					listAccountModel.addElement(currentBank.getListOfAccount().getLast().getAccountNumber()); // retrieve the account number from the last account object in the list of account and add to the JList
+					clearFields();// clear text fields
 				}
-				else {
+				else { // if the user does not fill in all fields
 					JOptionPane.showMessageDialog( contentPane , "Please fill in account number.", 
                             "Input Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -161,19 +163,19 @@ public class BankGUI extends JFrame {
 		JButton btnEditAccount = new JButton("Edit Account");
 		btnEditAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-				if(currentBank.getListOfAccount().get(list.getSelectedIndex()).getAccountType().equals("Saving")) {
-				accountSavingGUI currentAccount = new accountSavingGUI((savingAccount) currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this);
-				currentAccount.setVisible(true);
-				BankGUI.this.setVisible(false);
+				try { // try to get the account object from the Jlist
+				if(currentBank.getListOfAccount().get(list.getSelectedIndex()).getAccountType().equals("Saving")) { //if the account type is Saving
+				accountSavingGUI currentAccount = new accountSavingGUI((savingAccount) currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this); //create accountSavingGUI object by passing BankGUI object (the current window) and the saving account object which retrieves from the list of account
+				currentAccount.setVisible(true); //display accountSavingGUI window
+				BankGUI.this.setVisible(false); // remove the BankGUI window
 				}
-				else {
-					accountCheckingGUI currentAccount = new accountCheckingGUI((checkingAccount)currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this);
-					currentAccount.setVisible(true);
-					BankGUI.this.setVisible(false);
+				else { //if the account type is Checking
+					accountCheckingGUI currentAccount = new accountCheckingGUI((checkingAccount)currentBank.getListOfAccount().get(list.getSelectedIndex()),BankGUI.this); //create checkingSavingGUI object by passing BankGUI object (the current window) and the checking account object which retrieves from the list of account
+					currentAccount.setVisible(true);  //display accountSavingGUI window
+					BankGUI.this.setVisible(false); // remove the BankGUI window
 				}
 				}
-				catch(IndexOutOfBoundsException e1) {
+				catch(IndexOutOfBoundsException e1) { // catch error when the user does not select any account in the list
 					  JOptionPane.showMessageDialog( contentPane , "Please choose an account in the list.", 
 	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 					
@@ -188,8 +190,8 @@ public class BankGUI extends JFrame {
 		btnRemoveAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
-				currentBank.getListOfAccount().remove(list.getSelectedIndex());
-				listAccountModel.remove(list.getSelectedIndex());
+				currentBank.getListOfAccount().remove(list.getSelectedIndex()); // get the list of account from the bank object and find the account that has the index which is similar to the selected index in Jlist. After that, remove that account from the list of account
+				listAccountModel.remove(list.getSelectedIndex()); // remove the account number in the Jlist
 			}
 		});
 		btnRemoveAccount.setBounds(161, 349, 141, 30);
@@ -219,15 +221,19 @@ public class BankGUI extends JFrame {
 		
 		comboBox.setBounds(116, 303, 95, 21);
 		contentPane.add(comboBox);
+		
+		JScrollPane scrollPane = new JScrollPane(list); // add list to the scroll pane
+		scrollPane.setBounds(22, 70, 242, 123);
+		contentPane.add(scrollPane);
 	}
-	private void clearFields() {
+	private void clearFields() { // clear accountNumber field
 		accountNumber.setText("");
 		
 	}
-	private void refreshListOfAccount() {
-		listAccountModel.removeAllElements();
-		for(account a : currentBank.getListOfAccount()) {
-			listAccountModel.addElement(a.getAccountNumber());
+	private void refreshListOfAccount() { // refresh list of account
+		listAccountModel.removeAllElements(); // remove all elements in listAccountModel -> remove all elements in Jlist
+		for(account a : currentBank.getListOfAccount()) { // for each loop to loop through list of account of the bank object
+			listAccountModel.addElement(a.getAccountNumber()); // retrieve the account number of the account object and add to the list model -> account number is displayed on the Jlist
 		}
 	}
 }

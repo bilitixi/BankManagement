@@ -15,7 +15,7 @@ public class transaction {
 	    }
 
 	    public String getDateTime() {
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // format datetime
 	        return dateTime.format(formatter);
 	    }
 	    

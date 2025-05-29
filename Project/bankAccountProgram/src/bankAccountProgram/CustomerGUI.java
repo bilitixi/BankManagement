@@ -13,6 +13,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class CustomerGUI extends JFrame {
 
@@ -20,9 +22,9 @@ public class CustomerGUI extends JFrame {
 	private JPanel contentPane;
 	private static customer currentCustomer; // customer object
 	private static Home parent; // HomeGUI object
-	private JTextField name;
 	private JTextField phone;
-	private JTextField address;
+	private JTextArea address;
+	private JTextArea name ;
 	private JTextField bankName;
 	private JTextField branchCode;
 	public DefaultListModel listBankAccountModel = new DefaultListModel(); // listmodel to update Jlist
@@ -59,23 +61,23 @@ public class CustomerGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		name = new JTextField();
-		name.setBounds(503, 128, 148, 19);
-		name.setColumns(10);
-		name.setText(currentCustomer.getOwnerName());
-		contentPane.add(name);
-		
 		phone = new JTextField();
 		phone.setBounds(503, 165, 148, 19);
 		phone.setText(currentCustomer.getOwnerPhoneNumber());
 		contentPane.add(phone);
 		phone.setColumns(10);
 		
-		address = new JTextField();
-		address.setColumns(10);
-		address.setBounds(503, 207, 148, 19);
+	    address = new JTextArea();
+	    address.setLineWrap(true);
+		address.setBounds(503, 207, 148, 38);
 		address.setText(currentCustomer.getOwneraddress());
 		contentPane.add(address);
+		
+		name = new JTextArea();
+		name.setLineWrap(true);
+		name.setText(currentCustomer.getOwnerName());
+		name.setBounds(503, 117, 148, 38);
+		contentPane.add(name);
 		
 		JLabel lblName = new JLabel("Name: ");
 		lblName.setBounds(404, 131, 45, 13);
@@ -210,6 +212,12 @@ public class CustomerGUI extends JFrame {
 		});
 		btnRemoveBank.setBounds(161, 349, 141, 30);
 		contentPane.add(btnRemoveBank);
+		
+		JScrollPane scrollPane = new JScrollPane(list); // add list to the scroll pane
+		scrollPane.setBounds(23, 70, 241, 156);
+		contentPane.add(scrollPane);
+		
+	
 		
 	}
 	public void refreshBankList() {

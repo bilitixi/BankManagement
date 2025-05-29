@@ -14,6 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class accountSavingGUI extends JFrame {
 
@@ -22,9 +23,9 @@ public class accountSavingGUI extends JFrame {
 	private JTextField interestRate;
 	private JTextField withdrawLimit;
 	private JTextField amount;
-	private static savingAccount currentAccount;
-	private static BankGUI bankGUI;
-	private DefaultListModel listTransModel = new DefaultListModel();
+	private static savingAccount currentAccount; // savingAccount object
+	private static BankGUI bankGUI; // BankGUI object
+	private DefaultListModel listTransModel = new DefaultListModel(); // listModel to store transaction history
 
 	/**
 	 * Launch the application.
@@ -33,7 +34,7 @@ public class accountSavingGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
+					accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI); // create accountSavingGUI object with currentAccount object and bankGUI object
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,10 +47,8 @@ public class accountSavingGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public accountSavingGUI(savingAccount currentAccount, BankGUI bankGUI) {
-		for (transaction trans : currentAccount.getTransHistory() ) {
-			listTransModel.addElement("|Time: "+ trans.getDateTime());
-			listTransModel.addElement(trans.getType() + ": "+ String.format("%.2f", trans.getAmount()) );
-		}
+		this.currentAccount = currentAccount; // set currentAccount object as the account object that is passed into the accountSavingGUI constructor
+		refreshTransHistory(); // refresh transaction history
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 805, 471);
 		contentPane = new JPanel();
@@ -57,8 +56,8 @@ public class accountSavingGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JList listTrans = new JList(listTransModel);
-		listTrans.setBounds(45, 119, 254, 199);
+		JList listTrans = new JList(listTransModel); // display items in listTransModel in the JList
+		listTrans.setBounds(395, 177, 254, 199);
 		contentPane.add(listTrans);
 		
 		JLabel lblNewLabel = new JLabel("Interest Rate:");
@@ -68,7 +67,7 @@ public class accountSavingGUI extends JFrame {
 		
 		interestRate = new JTextField();
 		interestRate.setBounds(473, 82, 63, 19);
-		interestRate.setText(String.format("%.2f", currentAccount.getInterestRate()));
+		interestRate.setText(String.format("%.2f", currentAccount.getInterestRate())); // set the text as  the interest rate of the account object
 		contentPane.add(interestRate);
 		interestRate.setColumns(10);
 		
@@ -83,7 +82,7 @@ public class accountSavingGUI extends JFrame {
 		contentPane.add(lblWithdrawlLimit);
 		
 		withdrawLimit = new JTextField();
-		withdrawLimit.setText( String.format("%.2f", currentAccount.getWithdrawLimit()));
+		withdrawLimit.setText( String.format("%.2f", currentAccount.getWithdrawLimit())); // set the text as the the withdraw limit of the account object
 		withdrawLimit.setColumns(10);
 		withdrawLimit.setBounds(473, 117, 63, 19);
 		contentPane.add(withdrawLimit);
@@ -100,7 +99,7 @@ public class accountSavingGUI extends JFrame {
 		
 		JLabel lblBalance_num = new JLabel("Balance:");
 		lblBalance_num.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance()));
+		lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // set the text as the the balance next month of the account object
 		lblBalance_num.setBounds(463, 257, 77, 26);
 		contentPane.add(lblBalance_num);
 		
@@ -124,28 +123,29 @@ public class accountSavingGUI extends JFrame {
 		lblNewLabel_1_1_1_1.setBounds(546, 293, 41, 26);
 		contentPane.add(lblNewLabel_1_1_1_1);
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
+		JButton btnSave = new JButton("Save"); 
+		btnSave.addActionListener(new ActionListener() { // user click save button
 			public void actionPerformed(ActionEvent e) {
 				
-				try {
-					if(Float.parseFloat(interestRate.getText()) >= 0 && Float.parseFloat(withdrawLimit.getText()) >= 0) {
-				currentAccount.setInterestRate(Float.parseFloat(interestRate.getText()));
-				currentAccount.setWithdrawLimit(Float.parseFloat(withdrawLimit.getText()));
+				try { // try to change interest rate and withdraw limit of the object account
+					if(Float.parseFloat(interestRate.getText()) >= 0 && Float.parseFloat(withdrawLimit.getText()) >= 0) { // if interest rate and withdraw limit is more than 0
+				currentAccount.setInterestRate(Float.parseFloat(interestRate.getText())); //set interest rate of the account object based on the retrieved value of the text field
+				currentAccount.setWithdrawLimit(Float.parseFloat(withdrawLimit.getText())); //set withdraw limit of the account object based on the retrieved value of the text field
 				JOptionPane.showMessageDialog( contentPane , "Details saved", 
-                        "Notification", JOptionPane.INFORMATION_MESSAGE);
-				dispose();
-				accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
-				frame.setVisible(true); }
-					else {
+                        "Notification", JOptionPane.INFORMATION_MESSAGE); // display success message
+				lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // set the text as the the balance next mpnth of the account object
+				
+					}
+				
+					else { // if the interest rate and withdraw limit is the negative number
 						JOptionPane.showMessageDialog( contentPane , "Please input positive number", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); // display message
 					}
 				}
 				
-				catch (NumberFormatException e1) {
+				catch (NumberFormatException e1) { // catch errors if the input is not a valid number
 					 JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); // display error message
 				}
 				
 				
@@ -156,28 +156,27 @@ public class accountSavingGUI extends JFrame {
 		contentPane.add(btnSave);
 		
 		JButton btnDeposit = new JButton("Deposit");
-		btnDeposit.addActionListener(new ActionListener() {
+		btnDeposit.addActionListener(new ActionListener() { // user clicks deposit button
 			public void actionPerformed(ActionEvent e) {
 				
-				try {
-					if(Float.parseFloat(amount.getText()) > 0) {
-				currentAccount.deposit(Float.parseFloat(amount.getText()));
-				transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Deposit");
-				currentAccount.addTransHistory(currentTransaction);
-				listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime());
+				try { // try to retrieve the value of the input text field to see if it can be able to convert to float
+					if(Float.parseFloat(amount.getText()) > 0) { // if the input value is a positive number
+				currentAccount.deposit(Float.parseFloat(amount.getText())); // call the deposit function of the account object
+				transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Deposit"); // create transaction object
+				currentAccount.addTransHistory(currentTransaction); // add the newly created transaction object at line 167 into the list of transaction of the account object
+				// display time of the transaction in the Jlist
+				listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime()); 
 				listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
-				dispose();
-				accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
-				frame.setVisible(true); 
+				lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // update the balance of the account object
 					}
 					else {
-						JOptionPane.showMessageDialog( contentPane , "Please enter positive number", 
+						JOptionPane.showMessageDialog( contentPane , "Please enter positive number", // if the input value is not a positive number
 	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
-				catch (NumberFormatException e1) {
+				catch (NumberFormatException e1) { // catch errors if the input text field can not be able to convert to float
 					 JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); //display error message
 				}
 				
 				
@@ -188,35 +187,34 @@ public class accountSavingGUI extends JFrame {
 		contentPane.add(btnDeposit);
 		
 		JButton btnWithdraw = new JButton("Withdraw");
-		btnWithdraw.addActionListener(new ActionListener() {
+		btnWithdraw.addActionListener(new ActionListener() { // user clicks withdraw button
 			public void actionPerformed(ActionEvent e) {
 				
-				try {
-					if(Float.parseFloat(amount.getText()) > 0) {
-					boolean isWithdraw = currentAccount.withdraw(Float.parseFloat(amount.getText()));
-					if(isWithdraw == false) {
+				try {  // try to retrieve the value of the input text field to see if it can be able to convert to float
+					if(Float.parseFloat(amount.getText()) > 0) { // if the input value is a positive number
+					boolean isWithdraw = currentAccount.withdraw(Float.parseFloat(amount.getText())); // can the user withdraw?
+					if(isWithdraw == false) { // user exceeds withdraw limit
 						 JOptionPane.showMessageDialog( contentPane , "You have exceeded withdraw limit or your balance", 
-		                            "Input Error", JOptionPane.ERROR_MESSAGE);
+		                            "Input Error", JOptionPane.ERROR_MESSAGE); 
 					}
-					else {
-						transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Withdraw");
-						currentAccount.addTransHistory(currentTransaction);
+					else { // user did not exceed withdraw limit
+						transaction currentTransaction = new transaction(Float.parseFloat(amount.getText()),"Withdraw"); // create transaction object
+						currentAccount.addTransHistory(currentTransaction); // add the newly created transaction object at line 203 into the list of transaction of the account object
+						// display data of the transaction in the Jlist
 						listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime());
 						listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
-						dispose();
-						accountSavingGUI frame = new accountSavingGUI(currentAccount, bankGUI);
-						frame.setVisible(true); 
+						lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance()));
 					}
 					}
-					else {
+					else { // if the input value is not a positive number
 						JOptionPane.showMessageDialog( contentPane , "Please enter positive number", 
 	                            "Input Error", JOptionPane.ERROR_MESSAGE);
 					}
 					
 				}
-				catch (NumberFormatException e1) {
+				catch (NumberFormatException e1) { // catch errors if the input text field can not be able to convert to float
 					 JOptionPane.showMessageDialog( contentPane , "Invalid input! Please enter a valid number.", 
-	                            "Input Error", JOptionPane.ERROR_MESSAGE);
+	                            "Input Error", JOptionPane.ERROR_MESSAGE); //display error message
 				}
 				}
 			
@@ -224,11 +222,11 @@ public class accountSavingGUI extends JFrame {
 		btnWithdraw.setBounds(574, 293, 135, 21);
 		contentPane.add(btnWithdraw);
 		
-		JButton btnExit = new JButton("Exit");
+		JButton btnExit = new JButton("Exit"); 
 		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 dispose();
-				 bankGUI.setVisible(true);
+			public void actionPerformed(ActionEvent e) { // user clicks exit button
+				 dispose(); //accountSavingGUI window is closed
+				 bankGUI.setVisible(true); //bankGUI window is opened
 				
 			}
 		});
@@ -247,7 +245,7 @@ public class accountSavingGUI extends JFrame {
 		
 		JLabel lblbalanceNextMonth = new JLabel("New label");
 		lblbalanceNextMonth.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.returnBalanceNextMonth()));
+		lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.returnBalanceNextMonth())); // set the balance next month of the saving account by calling the function of account object
 		lblbalanceNextMonth.setBounds(473, 154, 63, 13);
 		contentPane.add(lblbalanceNextMonth);
 		
@@ -255,5 +253,17 @@ public class accountSavingGUI extends JFrame {
 		lblNewLabel_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1_1_2.setBounds(546, 147, 28, 26);
 		contentPane.add(lblNewLabel_1_1_2);
+		
+		JScrollPane scrollPane = new JScrollPane(listTrans); // create scroll pane and add jlist so that the list of transaction details can be scrolled
+		scrollPane.setBounds(45, 111, 233, 225);
+		contentPane.add(scrollPane);
+	}
+	public void refreshTransHistory() { // refresh function
+		listTransModel.removeAllElements(); // remove all elements of listTransModel
+		for (transaction trans : currentAccount.getTransHistory() ) { // for loop each for each transaction object in the list of transaction of the current account
+			// display transaction detail
+			listTransModel.addElement("|Time: "+ trans.getDateTime());
+			listTransModel.addElement(trans.getType() + ": "+ String.format("%.2f", trans.getAmount()) );
+		}
 	}
 }

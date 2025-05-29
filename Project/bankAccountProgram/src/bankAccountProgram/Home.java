@@ -19,14 +19,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 import java.awt.Font;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class Home extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField name;
 	private JTextField phone;
-	private JTextField address;
+	private JTextArea address;
+	private JTextArea name ;
 	private ArrayList <customer> listOfCustomer = new ArrayList <customer>(); // store list of customer object
 	private DefaultListModel listCustomerModel = new DefaultListModel(); // listmodel to update Jlist
 
@@ -66,20 +68,20 @@ public class Home extends JFrame {
 		list.setBounds(59, 73, 229, 276);
 		contentPane.add(list);
 		
-		name = new JTextField();
-		name.setBounds(496, 92, 124, 19);
-		contentPane.add(name);
-		name.setColumns(10);
-		
 		phone = new JTextField();
 		phone.setColumns(10);
 		phone.setBounds(496, 139, 124, 19);
 		contentPane.add(phone);
 		
-		address = new JTextField();
-		address.setColumns(10);
-		address.setBounds(496, 182, 124, 19);
+	    address = new JTextArea();
+	    address.setLineWrap(true);
+		address.setBounds(496, 185, 124, 54);
 		contentPane.add(address);
+		
+		name = new JTextArea();
+		name.setLineWrap(true);
+		name.setBounds(496, 87, 124, 29);
+		contentPane.add(name);
 		
 		JLabel lblName = new JLabel("Name:");
 		lblName.setBounds(394, 95, 45, 13);
@@ -175,6 +177,12 @@ public class Home extends JFrame {
 		});
 		btnNewButton.setBounds(471, 328, 124, 21);
 		contentPane.add(btnNewButton);
+		
+		JScrollPane scrollPane = new JScrollPane(list); // put jlist in the scroll pane
+		scrollPane.setBounds(59, 73, 229, 276);
+		contentPane.add(scrollPane);
+		
+	
 		
 		
 		
@@ -280,5 +288,4 @@ public class Home extends JFrame {
 		listOfCustomer.add(customer3);
 
 	}
-	
 }
