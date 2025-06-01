@@ -6,7 +6,7 @@ public class savingAccount extends account { // inherit from the account class
     
 	savingAccount(String accountNumTemp, String accountType, float balanceTemp){
 		super(accountNumTemp, accountType, balanceTemp );
-		interestRate = 0.1F; // set default interest rate
+		interestRate = 10; // set default interest rate
 		withdrawLimit = 1000; // set default withdrawLimit
 		
 		
@@ -25,7 +25,7 @@ public class savingAccount extends account { // inherit from the account class
 		withdrawLimit = tempWithdrawLimit;
 		
 	}
-	 public boolean withdraw(double amountTemp) {
+	 public boolean withdraw(float amountTemp) {
 	        if (amountTemp >= withdrawLimit) { // if withdraw amount is more than or equals to winthdrawLimit
 	            return false; // cannot withdraw
 	        } else if (amountTemp > balance) { // withdraw amount is more than balance
@@ -36,8 +36,8 @@ public class savingAccount extends account { // inherit from the account class
 	        }
 	    }
 	 
-	 public float returnBalanceNextMonth(){	
-		 balanceNextMonth = balance + (interestRate * balance); // calculate balance nextmonth
+	 public float getBalanceNextMonth(){	
+		 balanceNextMonth = balance + (interestRate/100 * balance); // calculate balance nextmonth
 		 return balanceNextMonth; 
 	 }
 	 

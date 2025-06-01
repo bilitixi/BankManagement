@@ -1,0 +1,42 @@
+Start
+Name: John Doe|Address: 20 Alberton Avenue, Mount Albert
+Bank Name: ANZ |Branch code: 01
+Account Number: 01-0222222-05 |Account Type: Saving |Account Balance: 200.0
+
+Account Number: 01-0222222-06 |Account Type: Checking |Account Balance: 1000.0
+
+End
+Bank Name: Westpac |Branch code: 02
+Account Number: 02-0222222-05 |Account Type: Saving |Account Balance: 400.0
+
+Account Number: 02-0222222-06 |Account Type: Checking |Account Balance: 2000.0
+
+End
+Start
+Name: Jane Smith|Address: 55 Remuera Road, Remuera
+Bank Name: BNZ |Branch code: 03
+Account Number: 03-1234567-01 |Account Type: Saving |Account Balance: 1500.0
+
+Account Number: 03-1234567-02 |Account Type: Checking |Account Balance: 2500.0
+
+End
+Bank Name: Kiwibank |Branch code: 04
+Account Number: 04-7654321-01 |Account Type: Saving |Account Balance: 800.0
+
+Account Number: 04-7654321-02 |Account Type: Checking |Account Balance: 1200.0
+
+End
+Start
+Name: Michael Tan|Address: 89 Queen Street, Auckland Central
+Bank Name: ASB |Branch code: 05
+Account Number: 05-9988776-03 |Account Type: Saving |Account Balance: 3000.0
+
+Account Number: 05-9988776-04 |Account Type: Checking |Account Balance: 4000.0
+
+End
+Bank Name: TSB |Branch code: 06
+Account Number: 06-3344556-07 |Account Type: Saving |Account Balance: 500.0
+
+Account Number: 06-3344556-08 |Account Type: Checking |Account Balance: 950.0
+
+End

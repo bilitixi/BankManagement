@@ -170,8 +170,7 @@ public class Home extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveReport(); // Generate report when user click the button
-				 JOptionPane.showMessageDialog( contentPane , "Report Saved.", 
-                         "Notification", JOptionPane.CLOSED_OPTION); // notification to user
+				 
 				
 			}
 		});
@@ -204,7 +203,7 @@ public class Home extends JFrame {
 	public void saveReport() {
 		PrintWriter out; // create printerWriter object
 		try {
-			out = new PrintWriter(new FileWriter("D:\\Desktop\\uni\\Second Year\\ISCG - 5421 (Programming)\\Week 10\\customer.txt")); // directory to save the customer.txt file
+			out = new PrintWriter(new FileWriter("Report.txt")); // directory to save the customer.txt file
 			for(customer c : listOfCustomer ) { // loop through every customer in listOfCustomer
 				 out.println("Start"); 
 				 out.println("Name: "+ c.getOwnerName() + "|Address: " +c.getOwneraddress());
@@ -219,7 +218,10 @@ public class Home extends JFrame {
 				 }
 
 				}
-			out.close(); 
+						out.close(); 
+						JOptionPane.showMessageDialog( contentPane , "Report is saved at the folder that is running this program, please check", 
+		                         "Notification", JOptionPane.CLOSED_OPTION); // notification to user
+						
 		} catch (IOException e) {
 			  JOptionPane.showMessageDialog( contentPane , "There is something wrong.", 
                       "Input Error", JOptionPane.ERROR_MESSAGE);

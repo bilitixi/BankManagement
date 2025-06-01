@@ -99,9 +99,15 @@ public class accountSavingGUI extends JFrame {
 		
 		JLabel lblBalance_num = new JLabel("Balance:");
 		lblBalance_num.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // set the text as the the balance next month of the account object
+		lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // set the text as the the balance of the account object
 		lblBalance_num.setBounds(463, 257, 77, 26);
 		contentPane.add(lblBalance_num);
+		
+		JLabel lblbalanceNextMonth = new JLabel("New label");
+		lblbalanceNextMonth.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.getBalanceNextMonth())); // set the balance next month of the saving account by calling the function of account object
+		lblbalanceNextMonth.setBounds(473, 154, 63, 13);
+		contentPane.add(lblbalanceNextMonth);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("$");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -129,11 +135,12 @@ public class accountSavingGUI extends JFrame {
 				
 				try { // try to change interest rate and withdraw limit of the object account
 					if(Float.parseFloat(interestRate.getText()) >= 0 && Float.parseFloat(withdrawLimit.getText()) >= 0) { // if interest rate and withdraw limit is more than 0
+
 				currentAccount.setInterestRate(Float.parseFloat(interestRate.getText())); //set interest rate of the account object based on the retrieved value of the text field
 				currentAccount.setWithdrawLimit(Float.parseFloat(withdrawLimit.getText())); //set withdraw limit of the account object based on the retrieved value of the text field
 				JOptionPane.showMessageDialog( contentPane , "Details saved", 
                         "Notification", JOptionPane.INFORMATION_MESSAGE); // display success message
-				lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // set the text as the the balance next mpnth of the account object
+				lblbalanceNextMonth.setText(String.format("%.2f", currentAccount.getBalanceNextMonth())); // set the text as the the balance next mpnth of the account object
 				
 					}
 				
@@ -168,7 +175,8 @@ public class accountSavingGUI extends JFrame {
 				listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime()); 
 				listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
 				lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance())); // update the balance of the account object
-					}
+				lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.getBalanceNextMonth())); // set the balance next month of the saving account after new balance updated by calling the function of account object
+				}
 					else {
 						JOptionPane.showMessageDialog( contentPane , "Please enter positive number", // if the input value is not a positive number
 	                            "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -204,6 +212,7 @@ public class accountSavingGUI extends JFrame {
 						listTransModel.addElement("|Time: "+ currentAccount.getTransHistory().getLast().getDateTime());
 						listTransModel.addElement(currentAccount.getTransHistory().getLast().getType() +": "+ currentAccount.getTransHistory().getLast().getAmount());
 						lblBalance_num.setText(String.format("%.2f", currentAccount.getBalance()));
+						lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.getBalanceNextMonth())); // set the balance next month of the saving account after new balance is updated by calling the function of account object
 					}
 					}
 					else { // if the input value is not a positive number
@@ -243,11 +252,7 @@ public class accountSavingGUI extends JFrame {
 		lblNewLabel_3.setBounds(309, 147, 155, 26);
 		contentPane.add(lblNewLabel_3);
 		
-		JLabel lblbalanceNextMonth = new JLabel("New label");
-		lblbalanceNextMonth.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblbalanceNextMonth.setText(String.format("%.2f",currentAccount.returnBalanceNextMonth())); // set the balance next month of the saving account by calling the function of account object
-		lblbalanceNextMonth.setBounds(473, 154, 63, 13);
-		contentPane.add(lblbalanceNextMonth);
+		
 		
 		JLabel lblNewLabel_1_1_2 = new JLabel("$");
 		lblNewLabel_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
