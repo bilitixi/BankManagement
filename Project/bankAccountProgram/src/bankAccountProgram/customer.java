@@ -7,7 +7,7 @@ public class customer {
 	private String address;
 	private String phoneNumber;
 	private ArrayList <bank> listOfBankAccount;
-	customer(int tempID, String nameTemp, String addressTemp, String phoneNumberTemp){
+	customer(int tempID, String nameTemp, String phoneNumberTemp, String addressTemp){
 		
 		name = nameTemp;
 		address = addressTemp;

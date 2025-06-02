@@ -214,9 +214,9 @@ public class Home extends JFrame {
 						 out.println("");
 						 
 					 }
-					 out.println("End");
+					
 				 }
-
+				 out.println("End");
 				}
 						out.close(); 
 						JOptionPane.showMessageDialog( contentPane , "Report is saved at the folder that is running this program, please check", 
